@@ -5,12 +5,21 @@
  */
 package cm331montyhall;
 
+import java.io.File;
+import java.util.HashSet;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -19,28 +28,37 @@ import javafx.stage.Stage;
  */
 public class CM331MontyHall extends Application {
     
+    private Label headerRibbon;
+    private GridPane gameZone;
+    
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+        BorderPane root = new BorderPane();
+        gameZone = new GridPane();
+        headerRibbon = new Label();
+        headerRibbon.setTextAlignment(TextAlignment.CENTER);
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
         
-        Scene scene = new Scene(root, 300, 250);
+        root.setTop(headerRibbon);
+        root.setCenter(gameZone);
         
-        primaryStage.setTitle("Hello World!");
+        clearGame();
+        
+        Scene scene = new Scene(root);
+        
+        primaryStage.setTitle("Lets Make a Deal");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+    public void clearGame() {
+        headerRibbon.setText("Welcome to \"Let\'s Make a Deal!\"");
+        gameZone.setAlignment(Pos.CENTER);
+        //gameZone = new Grid
+        gameZone.add(new ImageView("img"+java.io.File.separatorChar+"door_closed.png"), 0, 0);
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
