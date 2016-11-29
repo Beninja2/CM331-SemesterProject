@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cm331montyhall;
 
 import java.io.File;
@@ -22,10 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-/**
- *
- * @author ben
- */
 public class CM331MontyHall extends Application {
     
     private Label headerRibbon;
@@ -64,6 +55,8 @@ public class CM331MontyHall extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+        
+        Doors test = new Doors();
     }
     
 }
