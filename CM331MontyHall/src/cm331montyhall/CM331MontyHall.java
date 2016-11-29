@@ -26,7 +26,7 @@ public class CM331MontyHall extends Application {
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
-        gameZone = new GameInstance(1);
+        gameZone = new GameInstance(3);
         headerRibbon = new Label();
         headerRibbon.setTextAlignment(TextAlignment.CENTER);
         
