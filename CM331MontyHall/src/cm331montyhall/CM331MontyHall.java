@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -20,12 +21,12 @@ import javafx.stage.Stage;
 public class CM331MontyHall extends Application {
     
     private Label headerRibbon;
-    private GridPane gameZone;
+    private GameInstance gameZone;
     
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
-        gameZone = new GridPane();
+        gameZone = new GameInstance(1);
         headerRibbon = new Label();
         headerRibbon.setTextAlignment(TextAlignment.CENTER);
         
@@ -33,22 +34,13 @@ public class CM331MontyHall extends Application {
         root.setTop(headerRibbon);
         root.setCenter(gameZone);
         
-        clearGame();
         
-        Scene scene = new Scene(root);
-        
+        Scene scene = new Scene(root);//,200,200);
+
         primaryStage.setTitle("Lets Make a Deal");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    public void clearGame() {
-        headerRibbon.setText("Welcome to \"Let\'s Make a Deal!\"");
-        gameZone.setAlignment(Pos.CENTER);
-        //gameZone = new Grid
-        gameZone.add(new ImageView("img"+java.io.File.separatorChar+"door_closed.png"), 0, 0);
-    }
-    
+    }    
     
     /**
      * @param args the command line arguments

@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 public final class Doors 
 {
     public List<Boolean> DoorArray;
-    public int NumDoors = 2;
+    public int NumDoors = 3;
 
     public Doors()
     {
@@ -16,6 +16,9 @@ public final class Doors
     
     public Doors(int numDoors)
     {
+        if (numDoors < 3) {
+            throw new java.lang.IllegalArgumentException();
+        }
         this.setNumDoors(numDoors);
         this.randomizeResult();
     }
