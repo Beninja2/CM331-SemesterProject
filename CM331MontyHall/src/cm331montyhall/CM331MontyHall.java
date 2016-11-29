@@ -37,6 +37,8 @@ public class CM331MontyHall extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+        
+        Doors test = new Doors();
     }
     
 }

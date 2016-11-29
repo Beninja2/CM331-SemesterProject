@@ -1,18 +1,13 @@
+//Author: Ben Ciummo
 package cm331montyhall;
 
-import static java.nio.file.Files.*;
-import static java.rmi.Naming.*;
 import java.util.*;
 import java.util.concurrent.*;
-import static java.util.Collections.*;
-/**
- *
- * @author Ben Ciummo
- */
+
 public final class Doors 
 {
     public List<Boolean> DoorArray;
-    public int NumDoors = 3;
+    public int NumDoors = 2;
 
     public Doors()
     {
