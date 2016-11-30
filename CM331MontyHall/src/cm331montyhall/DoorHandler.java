@@ -13,14 +13,21 @@ import javafx.scene.input.MouseEvent;
  * @author rndmorris
  */
 public class DoorHandler implements EventHandler<MouseEvent>{
-    private Door[] doors;
-    public DoorHandler(Door[] doors) {
+    private DoorHolder doorHolder;
+    public DoorHandler(DoorHolder doorHolder) {
         super();
-        this.doors = doors;
+        this.doorHolder = doorHolder;
     }
     @Override
     public void handle (MouseEvent event) {
-        ((Door)event.getSource()).openDoor();
+        Door[] doorArray = doorHolder.getDoorArray();
+        for(int i = 0; i < doorArray.length; i++) {
+            doorArray[i].setSelected(false);
+        }
+        Door source = (Door)event.getSource();
+        source.setSelected(true);
+        doorHolder.setSelectedDoor(source.getDoorId());
+        System.out.println("Currently selected door = " + source.getDoorId());
     }
     
 }

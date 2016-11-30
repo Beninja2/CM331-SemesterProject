@@ -1,7 +1,7 @@
 package cm331montyhall;
 
 import javafx.application.Application;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,48 +12,27 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
-
 public class CM331MontyHall extends Application {
-    
-    private GameInstance currentGame;
-    private Label headerRibbon;
-    private GameDisplay gameZone;
-    
-    @Override
-    public void start(Stage primaryStage) {
-        BorderPane root = new BorderPane();
-        headerRibbon = new Label();
-        headerRibbon.setTextAlignment(TextAlignment.CENTER);
-        
-        VBox controls = new VBox();
-        
-        ComboBox numberSelection = new ComboBox();
-        numberSelection.setValue(3);
-        for (int i = 3; i <= 52; i++) {
-            numberSelection.getItems().add(i);
-        }
-        Button startGame = new Button("Start Game");
-        numberSelection.resize(startGame.getWidth(), numberSelection.getHeight());
-        startGame.setOnAction(e -> {
-            currentGame = new GameInstance((int)(numberSelection.getValue()));
-            gameZone = new GameDisplay(currentGame);
-            root.setCenter(gameZone);
-        });
-        
-        
-        controls.getChildren().addAll(new Label("Number of Doors:"),numberSelection,startGame);
-        
-        root.setLeft(controls);
-        root.setCenter(new VBox());
-        root.setTop(headerRibbon);
-        
-        
-        
-        Scene scene = new Scene(root,200,200);
 
-        primaryStage.setTitle("Lets Make a Deal");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    @Override
+    public void start(Stage mainStage) {
+        BorderPane root = new BorderPane();
+        
+        Label header = new Label("Welcome to \"Let's Make a Deal\"!");
+        header.setAlignment(Pos.CENTER);
+        header.setStyle("-fx-font-weight : bold;");
+        root.setTop(header);
+        
+        GameInstance instance = new GameInstance(5);
+        
+        DoorHolder holder = new DoorHolder(instance);
+        
+        root.setCenter(holder);
+        
+        
+        Scene rootScene = new Scene(root);//,500,500);
+        mainStage.setScene(rootScene);
+        mainStage.show();
     }    
     
     /**
@@ -61,7 +40,6 @@ public class CM331MontyHall extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        
     }
     
 }
