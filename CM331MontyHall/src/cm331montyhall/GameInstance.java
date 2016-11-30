@@ -1,36 +1,46 @@
+//Author: Ben Ciummo
 package cm331montyhall;
 
-import java.io.File;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.TilePane;
+import java.util.*;
+import java.util.concurrent.*;
 
-/**
- *
- * @author rndmorris
- */
-public class GameInstance extends TilePane{
-    ImageView[] doors;
-    String doorClosed = File.separator + "img" + File.separator + "door_closed.png";
-    String doorLoser = File.separator + "img" + File.separator + "door_loser";
-    String doorWinner = ".." + File.separator + "img" + File.separator + "door_winner";
-    public GameInstance(int doorCount) {
-        super();
-        if(52 < doorCount) throw new java.lang.IllegalArgumentException();
-        if(doorCount < 5) {
-            this.setPrefColumns(doorCount);
-        } else if (doorCount > 20) {
-            this.setPrefColumns(13);
-        }
-        this.setHgap(5);
-        this.setVgap(5);
-        
-        doors = new ImageView[doorCount];
-        for(int i = 0; i < doorCount; i++) {
-            doors[i] = new ImageView(doorClosed);
-            this.getChildren().add(doors[i]);
-        }
+public final class GameInstance 
+{
+    public List<Boolean> DoorArray;
+    public int NumDoors = 3;
+
+    public GameInstance()
+    {
+        this.randomizeResult();
     }
-    public GameInstance() {
-        this(3);
+    
+    public GameInstance(int numDoors)
+    {
+        if (numDoors < 3) {
+            throw new java.lang.IllegalArgumentException();
+        }
+        this.setNumDoors(numDoors);
+        this.randomizeResult();
+    }
+    
+    public void setNumDoors(int numDoors)
+    {
+        NumDoors = numDoors;
+    }
+    
+    public int getNumDoors()
+    {
+        return NumDoors;
+    }
+    
+    public void randomizeResult()
+    {
+        //Fill array with false
+        DoorArray=new ArrayList<Boolean>(Arrays.asList(new Boolean[NumDoors]));
+        Collections.fill(DoorArray, Boolean.FALSE);
+        
+        //Create one random value based on array length
+        int randVal = ThreadLocalRandom.current().nextInt(0, NumDoors + 1);
+        DoorArray.add(randVal, Boolean.TRUE);
     }
 }
