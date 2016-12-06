@@ -17,12 +17,6 @@ public class CM331MontyHall extends Application {
     @Override
     public void start(Stage mainStage) {
         BorderPane root = new BorderPane();
-<<<<<<< HEAD
-=======
-        gameZone = new GameInstance(3);
-        headerRibbon = new Label();
-        headerRibbon.setTextAlignment(TextAlignment.CENTER);
->>>>>>> b975f16fbf9249b6453e6b01895cec986ed39231
         
         Label header = new Label("Welcome to \"Let's Make a Deal\"!");
         header.setAlignment(Pos.CENTER);
@@ -46,13 +40,6 @@ public class CM331MontyHall extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-<<<<<<< HEAD
     }
     
 }
-=======
-        
-        Doors test = new Doors();
-    }   
-}
->>>>>>> b975f16fbf9249b6453e6b01895cec986ed39231

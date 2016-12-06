@@ -29,6 +29,8 @@ public class Door extends StackPane {
         super();
         setPrize(prize);
         this.doorId = doorId;
+        this.setHeight(doorLayer.getImage().getHeight()+10);
+        this.setWidth(doorLayer.getImage().getWidth()+10);
         this.getChildren().add(doorLayer);
     }
     public boolean isPrize() {
