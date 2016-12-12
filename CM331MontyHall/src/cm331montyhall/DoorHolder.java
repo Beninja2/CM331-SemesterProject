@@ -30,7 +30,7 @@ public class DoorHolder extends TilePane{
         this.setHgap(5);
         
         doorArray = new Door[currentGame.getNumDoors()];
-        DoorHandler doorHandler = new DoorHandler(this);
+        DoorHandler doorHandler = new DoorHandler(this, currentGame);
         
         for (int i = 0; i < doorArray.length; i++) {
             doorArray[i] = new Door(currentGame.DoorArray.get(i),i);

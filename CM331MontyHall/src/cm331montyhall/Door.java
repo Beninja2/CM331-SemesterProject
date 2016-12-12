@@ -17,10 +17,11 @@ import javafx.scene.layout.StackPane;
 public class Door extends StackPane {
     
     private static final String CLOSED = File.separator + "img" + File.separator + "door_closed.png";
-    private static final String LOSER = File.separator + "img" + File.separator + "door_loser";
-    private static final String WINNER = File.separator + "img" + File.separator + "door_winner";
+    private static final String LOSER = File.separator + "img" + File.separator + "door_loser.png";
+    private static final String WINNER = File.separator + "img" + File.separator + "door_winner.png";
     private boolean prize = false;
     private boolean selected = false;
+    private boolean opened = false;
     private int doorId = -1;
     private ImageView doorLayer = new ImageView(CLOSED);
     
@@ -40,6 +41,7 @@ public class Door extends StackPane {
         this.prize = prize;
     }
     public void openDoor() {
+        this.opened = true;
         if (isPrize()) {
             doorLayer.setImage(new Image(WINNER));
         } else {
@@ -54,10 +56,13 @@ public class Door extends StackPane {
         }
         this.selected = selected;
     }
-    public boolean getSelected() {
+    public boolean isSelected() {
         return selected;
     }
     public int getDoorId() {
         return this.doorId;
+    }
+    public boolean isOpened() {
+        return opened;
     }
 }
