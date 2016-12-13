@@ -14,35 +14,24 @@ import javafx.scene.layout.StackPane;
  *
  * @author rndmorris
  */
-public class Door extends StackPane {
+public class DoorImage extends StackPane {
     
     private static final String CLOSED = File.separator + "img" + File.separator + "door_closed.png";
     private static final String LOSER = File.separator + "img" + File.separator + "door_loser.png";
     private static final String WINNER = File.separator + "img" + File.separator + "door_winner.png";
-    private boolean prize = false;
-    private boolean selected = false;
-    private boolean opened = false;
-    private int doorId = -1;
     private ImageView doorLayer = new ImageView(CLOSED);
+    private Door door;
     
-    
-    public Door(boolean prize,int doorId) {
+    public DoorImage(Door door) {
         super();
-        setPrize(prize);
-        this.doorId = doorId;
+        this.door = door;
         this.setHeight(doorLayer.getImage().getHeight()+10);
         this.setWidth(doorLayer.getImage().getWidth()+10);
         this.getChildren().add(doorLayer);
     }
-    public boolean isPrize() {
-        return prize;
-    }
-    public void setPrize(boolean prize) {
-        this.prize = prize;
-    }
     public void openDoor() {
-        this.opened = true;
-        if (isPrize()) {
+        this.door.setOpened(true);
+        if (this.door.isWinner()) {
             doorLayer.setImage(new Image(WINNER));
         } else {
             doorLayer.setImage(new Image(LOSER));
@@ -54,15 +43,8 @@ public class Door extends StackPane {
         } else {
             this.setStyle("-fx-background-color: #ffffff");
         }
-        this.selected = selected;
     }
-    public boolean isSelected() {
-        return selected;
-    }
-    public int getDoorId() {
-        return this.doorId;
-    }
-    public boolean isOpened() {
-        return opened;
+    public Door getDoor() {
+        return this.door;
     }
 }

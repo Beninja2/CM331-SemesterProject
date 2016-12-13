@@ -11,12 +11,17 @@ import javafx.scene.layout.TilePane;
  *
  * @author rndmorris
  */
-public class DoorHolder extends TilePane{
-    private Door[] doorArray;
+public class PlayerUI extends TilePane{
+    private DoorImage[] doorArray;
     private GameInstance currentGame;
-    private int selectedDoor = -1;
+    private SelectionHandler doorHandler;
     
-    public DoorHolder(GameInstance currentGame) {
+    public DoorImage[] getDoorArray()
+    {
+        return doorArray;
+    }
+    
+    public PlayerUI(GameInstance currentGame) {
         this.currentGame = currentGame;
         if (52 < currentGame.getNumDoors()) {
             throw new java.lang.IllegalArgumentException();
@@ -29,27 +34,17 @@ public class DoorHolder extends TilePane{
         this.setVgap(5);
         this.setHgap(5);
         
-        doorArray = new Door[currentGame.getNumDoors()];
-        DoorHandler doorHandler = new DoorHandler(this, currentGame);
+        doorArray = new DoorImage[currentGame.getNumDoors()];
+        doorHandler = new SelectionHandler(doorArray, currentGame);
         
         for (int i = 0; i < doorArray.length; i++) {
-            doorArray[i] = new Door(currentGame.DoorArray.get(i),i);
+            doorArray[i] = new DoorImage(currentGame.getDoorList().get(i));
             this.getChildren().add(doorArray[i]);
             doorArray[i].setOnMouseReleased(doorHandler);
         }
     }
-    public int getSelectedDoor() {
-        return this.selectedDoor;
-    }
-    public void setSelectedDoor(int selectedDoor) {
-        if (selectedDoor < 0 || doorArray.length < selectedDoor) {
-            throw new java.lang.IllegalArgumentException();
-        } else {
-            this.selectedDoor = selectedDoor;
-        }
-    }
-    public Door[] getDoorArray() {
-        return this.doorArray;
+    public SelectionHandler getDoorHandler() {
+        return this.doorHandler;
     }
     
 }

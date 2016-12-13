@@ -6,33 +6,39 @@
 package cm331montyhall;
 
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 /**
  *
  * @author rndmorris
  */
-public class DoorHandler implements EventHandler<MouseEvent>{
-    private DoorHolder doorHolder;
+public class SelectionHandler implements EventHandler<MouseEvent>{
+    
+    private DoorImage[] doorImages;
     private GameInstance currentGame;
-    public DoorHandler(DoorHolder doorHolder, GameInstance currentGame) {
+    private Button nextBtn;
+    
+    public SelectionHandler(DoorImage[] doorImages, GameInstance currentGame) {
         super();
-        this.doorHolder = doorHolder;
+        this.doorImages = doorImages;
         this.currentGame = currentGame;
     }
     @Override
     public void handle (MouseEvent event) {
-        Door source = (Door)event.getSource();
-        if (!source.isOpened()) {
-            Door[] doorArray = doorHolder.getDoorArray();
-        for(int i = 0; i < doorArray.length; i++) {
-            doorArray[i].setSelected(false);
+        DoorImage source = (DoorImage)event.getSource();
+        if (!source.getDoor().isOpened()) {
+            for(int i = 0; i < doorImages.length; i++) {
+                doorImages[i].setSelected(false);
+            }
         }
-        source.setSelected(true);
-        source.openDoor();
-        doorHolder.setSelectedDoor(source.getDoorId());
-        System.out.println("Currently selected door = " + source.getDoorId());
-        }
+        doorImages[source.getDoor().getId()].setSelected(true);
+        currentGame.setCurrentSelection(source.getDoor().getId());
+        this.nextBtn.setDisable(false);
+        //doorImages[source.getDoor().getId()].openDoor();
     }
-    
+    public void setNextBtn(Button nextBtn) {
+        this.nextBtn = nextBtn;
+    }
 }
+

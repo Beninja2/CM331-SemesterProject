@@ -5,64 +5,31 @@
  */
 package cm331montyhall;
 
-import java.io.File;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-
 /**
  *
  * @author rndmorris
  */
-public class Door extends StackPane {
-    
-    private static final String CLOSED = File.separator + "img" + File.separator + "door_closed.png";
-    private static final String LOSER = File.separator + "img" + File.separator + "door_loser.png";
-    private static final String WINNER = File.separator + "img" + File.separator + "door_winner.png";
-    private boolean prize = false;
-    private boolean selected = false;
+public class Door {
+    private boolean winner = false;
     private boolean opened = false;
-    private int doorId = -1;
-    private ImageView doorLayer = new ImageView(CLOSED);
+    private int id;
     
+    public Door(boolean winner, int id) {
+        this.winner = winner;
+        this.id = id;
+    }
     
-    public Door(boolean prize,int doorId) {
-        super();
-        setPrize(prize);
-        this.doorId = doorId;
-        this.setHeight(doorLayer.getImage().getHeight()+10);
-        this.setWidth(doorLayer.getImage().getWidth()+10);
-        this.getChildren().add(doorLayer);
+    public boolean isWinner() {
+        return this.winner;
     }
-    public boolean isPrize() {
-        return prize;
-    }
-    public void setPrize(boolean prize) {
-        this.prize = prize;
-    }
-    public void openDoor() {
-        this.opened = true;
-        if (isPrize()) {
-            doorLayer.setImage(new Image(WINNER));
-        } else {
-            doorLayer.setImage(new Image(LOSER));
-        }
-    }
-    public void setSelected(boolean selected) {
-        if (selected) {
-            this.setStyle("-fx-background-color: #00ff00");
-        } else {
-            this.setStyle("-fx-background-color: #ffffff");
-        }
-        this.selected = selected;
-    }
-    public boolean isSelected() {
-        return selected;
-    }
-    public int getDoorId() {
-        return this.doorId;
-    }
+    
     public boolean isOpened() {
-        return opened;
+        return this.opened;
+    }
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+    public int getId() {
+        return this.id;
     }
 }
