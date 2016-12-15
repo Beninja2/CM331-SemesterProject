@@ -21,7 +21,7 @@ import javafx.scene.control.TextArea;
 public class GameAIManager extends Thread{
     private int maxCycles = 0;
     private int percentToSwitch = 0;
-    private AtomicInteger gamesWon = new AtomicInteger(0);
+    private final AtomicInteger gamesWon = new AtomicInteger(0);
     private int numberOfDoors = 3;
     private int threadCount = 1;
     private boolean initialized = false;

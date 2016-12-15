@@ -160,8 +160,6 @@ public class CM331MontyHall extends Application {
             gaim.setStartBtn(aiUI.startBtn);
             gaim.setStopBtn(aiUI.stopBtn);
             gaim.start();
-            aiUI.stopBtn.setDisable(false);
-            aiUI.startBtn.setDisable(true);
         }
         
     }
