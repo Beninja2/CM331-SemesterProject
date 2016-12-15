@@ -6,25 +6,51 @@
 package cm331montyhall;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 
 /**
  *
  * @author rndmorris
  */
-public class GameAIManager {
+public class GameAIManager extends Thread{
     private int maxCycles = 0;
     private int percentToSwitch = 0;
-    private StringBuilder output = new StringBuilder();
     private AtomicInteger gamesWon = new AtomicInteger(0);
     private int numberOfDoors = 3;
     private int threadCount = 1;
     private boolean initialized = false;
+    private boolean hasRan = false;
+    private TextArea outputArea;
+    private Button startBtn = null;
+    private Button stopBtn = null;
+    private Date startTime = null;
+    private long executionTime = -1;
     
     private GameAIWorker[] workers = null;
+    
+    public void run() {
+        if (this.startBtn != null) {
+            this.startBtn.setDisable(true);
+            this.stopBtn.setDisable(false);
+        }
+        this.startTime = new Date();
+        this.initilize();
+        this.play();
+        executionTime = new Date().getTime() - this.startTime.getTime();
+        if (this.outputArea != null) {
+            this.outputArea.appendText(this.getResults());
+        }
+        if (this.startBtn != null) {
+            this.startBtn.setDisable(false);
+            this.stopBtn.setDisable(true);
+        }
+    }
     
     public GameAIManager(int maxCycles, int percentToSwitch, int numberOfDoors) {
         setMaxCycles(maxCycles);
@@ -36,28 +62,42 @@ public class GameAIManager {
         setThreadCount(threadCount);
     }
     
-    
+    public void setOutputArea(TextArea outputArea) {
+        if (outputArea == null) {
+            throw new NullPointerException();
+        }
+        this.outputArea = outputArea;
+    }
+    public void setStartBtn(Button startBtn) {
+        if (startBtn == null) {
+            throw new NullPointerException();
+        }
+        this.startBtn = startBtn;
+    }
+    public void setStopBtn(Button stopBtn) {
+        if (stopBtn == null) {
+            throw new NullPointerException();
+        }
+        this.stopBtn = stopBtn;
+    }
     private void setMaxCycles(int maxCycles) {
         if (maxCycles < 0) {
             throw new IllegalArgumentException();
         }
         this.maxCycles = maxCycles;
     }
-    
     private void setPercentToSwitch(int percentToSwitch) {
         if (percentToSwitch < 0 || 100 < percentToSwitch) {
             throw new IllegalArgumentException();
         }
         this.percentToSwitch = percentToSwitch;
     }
-    
     private void setNumberOfDoors(int numberOfDoors) {
         if (numberOfDoors < 3) {
             throw new IllegalArgumentException();
         }
         this.numberOfDoors = numberOfDoors;
     }
-    
     private void setThreadCount (int threadCount) {
         if (threadCount < 0) {
             throw new IllegalArgumentException();
@@ -65,11 +105,11 @@ public class GameAIManager {
         this.threadCount = threadCount;
     }
 
-    void initilize() {
+    public void initilize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         int cyclesPerWorker = this.maxCycles / this.threadCount;
         int leftoverCycles = this.maxCycles % this.threadCount;
-        int totalSwitches = this.maxCycles / this.percentToSwitch;
+        int totalSwitches = (int)Math.floor(this.maxCycles * (this.percentToSwitch / 100.0));
         int switchesPerWorker = totalSwitches / this.threadCount;
         int leftoverSwitches = totalSwitches % this.threadCount;
                 
@@ -88,12 +128,15 @@ public class GameAIManager {
             }
             workers[i].setNumberOfDoors(this.numberOfDoors);
         }
+        this.initialized = true;
+        this.hasRan = false;
     }
     
-    void start() {
+    public void play() {
         if (!initialized) {
             throw new java.lang.IllegalStateException("GameAIManager has not been initilized");
         }
+        
         for (GameAIWorker worker : workers) {
             worker.start();
         }
@@ -104,6 +147,31 @@ public class GameAIManager {
                 ie.printStackTrace(System.err);
             }
         }
+        this.hasRan = true;
+        this.initialized = false;
+    }
+    
+    public String getResults() {
+        if (!hasRan) {
+            throw new java.lang.IllegalStateException("GameAIManager has not been run to generate any results!");
+        }
+        StringBuilder output = new StringBuilder();
+        output.append("Won ")
+                .append(this.gamesWon.get())
+                .append(" out of ")
+                .append(this.maxCycles)
+                .append(" games (")
+                .append(String.format("%1.3f", (this.gamesWon.get() * 1.0) / (this.maxCycles * 1.0) * 100 ))
+                .append("%) with ")
+                .append(this.numberOfDoors)
+                .append(" doors, while switching selections ")
+                .append(this.percentToSwitch)
+                .append("% of the time. Used ")
+                .append(this.threadCount)
+                .append(" thread(s). Executed in ")
+                .append(this.executionTime)
+                .append(" milliseconds.\n");
+        return output.toString();
     }
 
     

@@ -21,9 +21,7 @@ public class CM331MontyHall extends Application {
     PlayerUI playerUI = null;
     AiUI aiUI = null;
     
-    //Info labels
-    final Label MAINMENU = new Label("Select a game-mode below!");
-    
+    GameAIManager gaim = null;
     
     @Override
     public void start(Stage mainStage) {
@@ -53,6 +51,7 @@ public class CM331MontyHall extends Application {
                 aiUI = new AiUI();
             }
             aiUI.startBtn.setOnAction(e -> aiStart());
+            aiUI.stopBtn.setOnAction(e -> aiStop());
             root.setCenter(aiUI);
             
             
@@ -112,6 +111,7 @@ public class CM331MontyHall extends Application {
         int cycles = -1;
         int percentToSwitch = -1;
         int numberOfDoors = -1;
+        int threadCount = 1;
         boolean error = false;
         try {
             cycles = aiUI.numOfRuns.getInt();
@@ -130,6 +130,12 @@ public class CM331MontyHall extends Application {
             error = true;
             displayError("The number of times to switch must be a number.");
         }
+        try {
+            threadCount = aiUI.numberOfThreads.getInt();
+        } catch (NumberFormatException nfe) {
+            error = true;
+            displayError("The number of threads must be a number.");
+        }
         
         if (!error && cycles <= 0) {
             error = true;
@@ -143,16 +149,28 @@ public class CM331MontyHall extends Application {
             error = true;
             displayError("Percent to switch must (inclusively) be\nbetween 0 and 100.");
         }
+        if (!error && threadCount < 1) {
+            error = true;
+            displayError("Thread count must be at least 1.");
+        }
         
         if (!error) {
-            GameAIManager gaim = new GameAIManager(cycles,percentToSwitch,numberOfDoors);
-            gaim.initilize();
+            gaim = new GameAIManager(cycles,percentToSwitch,numberOfDoors,threadCount);
+            gaim.setOutputArea(aiUI.aiOutput);
+            gaim.setStartBtn(aiUI.startBtn);
+            gaim.setStopBtn(aiUI.stopBtn);
             gaim.start();
-            //aiUI.aiOutput.appendText(gaim.getResults());
+            aiUI.stopBtn.setDisable(false);
+            aiUI.startBtn.setDisable(true);
         }
         
     }
-    
+    private void aiStop() {
+        gaim.interrupt();
+        aiUI.aiOutput.appendText("Execution halted!\n");
+        aiUI.stopBtn.setDisable(true);
+        aiUI.startBtn.setDisable(false);
+    }
     private void displayError(String message) {
         Alert popup = new Alert(AlertType.ERROR,message);
         popup.initModality(Modality.APPLICATION_MODAL);
