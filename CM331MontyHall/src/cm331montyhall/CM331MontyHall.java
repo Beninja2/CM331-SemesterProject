@@ -111,15 +111,21 @@ public class CM331MontyHall extends Application {
     private void aiStart() {
         int cycles = -1;
         int percentToSwitch = -1;
+        int numberOfDoors = -1;
         boolean error = false;
         try {
-            cycles = Integer.parseInt(aiUI.numOfRuns.getText());
+            cycles = aiUI.numOfRuns.getInt();
         } catch (NumberFormatException nfe) {
             error = true;
             displayError("The number of times to play must be a number.");
         }
         try {
-            percentToSwitch = Integer.parseInt(aiUI.percentToSwitch.getText());
+            numberOfDoors = aiUI.numOfDoors.getInt();
+        } catch (NumberFormatException nfe) {
+            displayError("The number of doors must be a number.");
+        }
+        try {
+            percentToSwitch = aiUI.percentToSwitch.getInt();
         } catch (NumberFormatException nfe) {
             error = true;
             displayError("The number of times to switch must be a number.");
@@ -129,13 +135,20 @@ public class CM331MontyHall extends Application {
             error = true;
             displayError("Times to play must be greater than 0.");
         }
+        if (!error && numberOfDoors < 3) {
+            error = true;
+            displayError("Number of doors must be at least 3.");
+        }
         if (!error && (percentToSwitch < 0 || 100 < percentToSwitch)) {
             error = true;
             displayError("Percent to switch must (inclusively) be\nbetween 0 and 100.");
         }
         
         if (!error) {
-            //AiUI
+            GameAIManager gaim = new GameAIManager(cycles,percentToSwitch,numberOfDoors);
+            gaim.initilize();
+            gaim.start();
+            //aiUI.aiOutput.appendText(gaim.getResults());
         }
         
     }

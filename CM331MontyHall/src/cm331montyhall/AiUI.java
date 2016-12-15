@@ -20,25 +20,42 @@ public class AiUI extends VBox{
     
     HBox aiControls = new HBox();
     Label runLabel = new Label("Play ");
-    TextField numOfRuns = new TextField();
-    Label switchLabel1 = new Label(" times and change selection ");
-    Label switchLabel2 = new Label("% of the time.");
-    TextField percentToSwitch = new TextField();
+    IntegerField numOfRuns = new IntegerField(500);
+    Label numDoorLabel = new Label(" times with ");
+    IntegerField numOfDoors = new IntegerField(3);
+    Label switchLabel1 = new Label(" number of doors, and change selection ");
+    IntegerField percentToSwitch = new IntegerField(100);
+    Label switchLabel2 = new Label("% of the time. Use ");
+    IntegerField numberOfThreads = new IntegerField(1);
     Button startBtn = new Button("Start >>>");
     
     TextArea aiOutput = new TextArea();
     
     public AiUI() {
         super();
-        numOfRuns.setText("500");
         numOfRuns.setMaxWidth(60);
-        percentToSwitch.setText("100");
+        numOfDoors.setMaxWidth(60);
         percentToSwitch.setMaxWidth(60);
-        aiControls.getChildren().addAll(runLabel,numOfRuns,switchLabel1,percentToSwitch,switchLabel2,startBtn);
+        numberOfThreads.setMaxWidth(60);
+        aiControls.getChildren().addAll(runLabel,numOfRuns,numDoorLabel,numOfDoors,switchLabel1,percentToSwitch,switchLabel2,startBtn);
         this.getChildren().addAll(aiControls,aiOutput);
     }
     
-    
+    class IntegerField extends TextField {
+        String fieldName = "IntegerField";
+        
+        public IntegerField (int initValue) {
+            super(Integer.toString(initValue));
+        }
+        public IntegerField (int initValue, String fieldName) {
+            this(initValue);
+            this.fieldName = fieldName;
+        }
+        
+        public int getInt() throws NumberFormatException{
+            return Integer.parseInt(super.getText());
+        }
+    }
     
     
 }
