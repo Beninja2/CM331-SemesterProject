@@ -33,20 +33,53 @@ public final class GameInstance
         return this.winningDoor;
     }
     public int openEmptyDoor() {
-        Door out;
-        ArrayList<Door> validDoors = new ArrayList<>(doorList);
-        validDoors.remove(doorList.get(winningDoor));
-        validDoors.remove(doorList.get(currentSelection));
-        if (validDoors.size() == 1) {
-            out = validDoors.get(0);
-        }
-        else {
-            out = validDoors.get(ThreadLocalRandom.current().nextInt(0,validDoors.size()));
-        }
+        //Door out;
+        int out = -1;
         
-        out.setOpened(true);
+        if (this.currentSelection != this.winningDoor) {
+            int least;
+            int great;
+            if (this.currentSelection < this.winningDoor) {
+                least = this.currentSelection;
+                great = this.winningDoor;
+            } else {
+                least = this.winningDoor;
+                great = this.currentSelection;
+            }
+            if (1 == doorList.size() - 2) {
+                out = ThreadLocalRandom.current().nextInt(0,doorList.size() - 2);
+            } else {
+                out = 0;
+            }
+            if (least <= out) {
+                out += 1;
+            }
+            if (great <= out) {
+                out += 1;
+            }
+        } else {
+            out = ThreadLocalRandom.current().nextInt(0,doorList.size() - 1);
+            if (this.winningDoor <= out) {
+                out += 1;
+            }
+        }
+        doorList.get(out).setOpened(true);
         this.openedEmptyDoor = true;
-        return out.getId();
+        return out;
+        
+//        ArrayList<Door> validDoors = new ArrayList<>(doorList);
+//        validDoors.remove(doorList.get(winningDoor));
+//        validDoors.remove(doorList.get(currentSelection));
+//        if (validDoors.size() == 1) {
+//            out = validDoors.get(0);
+//        }
+//        else {
+//            out = validDoors.get(ThreadLocalRandom.current().nextInt(0,validDoors.size()));
+//        }
+        
+        //out.setOpened(true);
+        //this.openedEmptyDoor = true;
+        //return out.getId();
     }
     
     public ArrayList<Door> getDoorList() {

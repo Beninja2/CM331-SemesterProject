@@ -106,7 +106,6 @@ public class GameAIManager extends Thread{
     }
 
     public void initilize() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         int cyclesPerWorker = this.maxCycles / this.threadCount;
         int leftoverCycles = this.maxCycles % this.threadCount;
         int totalSwitches = (int)Math.floor(this.maxCycles * (this.percentToSwitch / 100.0));
@@ -242,7 +241,6 @@ public class GameAIManager extends Thread{
                 }
                 this.cycleCount--;
             }
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
         
     }
