@@ -1,8 +1,14 @@
 //Author: Ben Ciummo
 package cm331montyhall;
 
-import java.util.*;
-import java.util.concurrent.*;
+//import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.concurrent.ThreadLocalRandom;
+
+//import java.util.concurrent.*;
 
 public final class GameInstance 
 {
@@ -23,17 +29,19 @@ public final class GameInstance
         }
         doorList = this.randomizeResult(numDoors);
     }
-    
+    public int getWinningDoor() {
+        return this.winningDoor;
+    }
     public int openEmptyDoor() {
         Door out;
-        ArrayList<Door> validDoors = new ArrayList<Door>(doorList);
+        ArrayList<Door> validDoors = new ArrayList<>(doorList);
         validDoors.remove(doorList.get(winningDoor));
         validDoors.remove(doorList.get(currentSelection));
         if (validDoors.size() == 1) {
             out = validDoors.get(0);
         }
         else {
-            out = validDoors.get(ThreadLocalRandom.current().nextInt(0, validDoors.size() - 1));
+            out = validDoors.get(ThreadLocalRandom.current().nextInt(0,validDoors.size()));
         }
         
         out.setOpened(true);
@@ -60,13 +68,13 @@ public final class GameInstance
     
     public ArrayList<Door> randomizeResult(int numDoors)
     {
-        ArrayList<Door> out = new ArrayList<Door>(numDoors);
-        List<Boolean> DoorArray = new ArrayList<Boolean>(Arrays.asList(new Boolean[numDoors]));;
+        ArrayList<Door> out = new ArrayList<>(numDoors);
+        ArrayList<Boolean> DoorArray = new ArrayList<>(Arrays.asList(new Boolean[numDoors]));
         //Fill array with false
         Collections.fill(DoorArray, Boolean.FALSE);
         
         //Create one random value based on array length
-        this.winningDoor = ThreadLocalRandom.current().nextInt(0, numDoors - 1);
+        this.winningDoor = ThreadLocalRandom.current().nextInt(0,numDoors);
         DoorArray.add(winningDoor, Boolean.TRUE);
         
         for (int i = 0; i < numDoors; i++) {

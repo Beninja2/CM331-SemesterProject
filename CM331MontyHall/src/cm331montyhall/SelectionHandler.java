@@ -15,8 +15,8 @@ import javafx.scene.input.MouseEvent;
  */
 public class SelectionHandler implements EventHandler<MouseEvent>{
     
-    private DoorImage[] doorImages;
-    private GameInstance currentGame;
+    private final DoorImage[] doorImages;
+    private final GameInstance currentGame;
     private Button nextBtn;
     
     public SelectionHandler(DoorImage[] doorImages, GameInstance currentGame) {
@@ -28,14 +28,13 @@ public class SelectionHandler implements EventHandler<MouseEvent>{
     public void handle (MouseEvent event) {
         DoorImage source = (DoorImage)event.getSource();
         if (!source.getDoor().isOpened()) {
-            for(int i = 0; i < doorImages.length; i++) {
-                doorImages[i].setSelected(false);
+            for (DoorImage doorImage : doorImages) {
+                doorImage.setSelected(false);
             }
+            doorImages[source.getDoor().getId()].setSelected(true);
+            currentGame.setCurrentSelection(source.getDoor().getId());
+            this.nextBtn.setDisable(false);
         }
-        doorImages[source.getDoor().getId()].setSelected(true);
-        currentGame.setCurrentSelection(source.getDoor().getId());
-        this.nextBtn.setDisable(false);
-        //doorImages[source.getDoor().getId()].openDoor();
     }
     public void setNextBtn(Button nextBtn) {
         this.nextBtn = nextBtn;

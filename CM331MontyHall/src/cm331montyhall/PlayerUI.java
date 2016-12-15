@@ -12,9 +12,9 @@ import javafx.scene.layout.TilePane;
  * @author rndmorris
  */
 public class PlayerUI extends TilePane{
-    private DoorImage[] doorArray;
-    private GameInstance currentGame;
-    private SelectionHandler doorHandler;
+    private final DoorImage[] doorArray;
+    private final GameInstance currentGame;
+    private final SelectionHandler doorHandler;
     
     public DoorImage[] getDoorArray()
     {

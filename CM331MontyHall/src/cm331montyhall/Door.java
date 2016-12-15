@@ -12,7 +12,7 @@ package cm331montyhall;
 public class Door {
     private boolean winner = false;
     private boolean opened = false;
-    private int id;
+    private final int id;
     
     public Door(boolean winner, int id) {
         this.winner = winner;
