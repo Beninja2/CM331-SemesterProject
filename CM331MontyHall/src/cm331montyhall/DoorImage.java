@@ -16,9 +16,9 @@ import javafx.scene.layout.StackPane;
  */
 public class DoorImage extends StackPane {
     
-    private static final String CLOSED = File.separator + "img" + File.separator + "door_closed.png";
-    private static final String LOSER = File.separator + "img" + File.separator + "door_loser.png";
-    private static final String WINNER = File.separator + "img" + File.separator + "door_winner.png";
+    private static final String CLOSED = "door_closed.png";
+    private static final String LOSER = "door_loser.png";
+    private static final String WINNER = "door_winner.png";
     private ImageView doorLayer = new ImageView(CLOSED);
     private Door door;
     
