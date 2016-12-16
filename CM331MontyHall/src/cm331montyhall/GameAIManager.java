@@ -31,11 +31,13 @@ public class GameAIManager extends Thread{
     private Button stopBtn = null;
     private Date startTime = null;
     private long executionTime = -1;
+    private boolean interrupted;
     
     private GameAIWorker[] workers = null;
     
     @Override
     public void run() {
+        this.interrupted = false;
         if (this.startBtn != null) {
             this.startBtn.setDisable(true);
             this.stopBtn.setDisable(false);
@@ -44,7 +46,7 @@ public class GameAIManager extends Thread{
         this.initilize();
         this.play();
         executionTime = new Date().getTime() - this.startTime.getTime();
-        if (this.outputArea != null) {
+        if (this.outputArea != null && !this.interrupted) {
             this.outputArea.appendText(this.getResults());
         }
         if (this.startBtn != null) {
@@ -180,6 +182,7 @@ public class GameAIManager extends Thread{
             while (worker.isAlive()) {
                 worker.interrupt();
             }
+            this.interrupted = true;
         }
     }
 
