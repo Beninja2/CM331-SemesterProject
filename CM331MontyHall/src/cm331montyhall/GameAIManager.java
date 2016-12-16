@@ -177,7 +177,9 @@ public class GameAIManager extends Thread{
     void halt() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         for (GameAIWorker worker : workers) {
-            worker.halt();
+            while (worker.isAlive()) {
+                worker.interrupt();
+            }
         }
     }
 
@@ -190,11 +192,7 @@ public class GameAIManager extends Thread{
         private int switchCount = 0;
         private int numberOfDoors = 3;
         private GameInstance currentGame = null;
-        private volatile boolean running;
-        
-        public synchronized void halt() {
-            this.running = false;
-        }
+
         
         
         public GameAIWorker(AtomicInteger winCounter) {
@@ -232,9 +230,8 @@ public class GameAIManager extends Thread{
         
         @Override
         public void run() {
-            running = true;
             int removedDoor;
-            while (running && 0 < this.cycleCount) {
+            while (!this.isInterrupted() && 0 < this.cycleCount) {
                 currentGame = new GameInstance(numberOfDoors);
                 currentGame.setCurrentSelection(ThreadLocalRandom.current().nextInt(0,numberOfDoors));
                 removedDoor =  currentGame.openEmptyDoor();
@@ -268,7 +265,6 @@ public class GameAIManager extends Thread{
                 }
                 this.cycleCount--;
             }
-            this.running = false;
         }
         
     }
