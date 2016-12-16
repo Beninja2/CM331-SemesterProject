@@ -164,10 +164,8 @@ public class CM331MontyHall extends Application {
         
     }
     private void aiStop() {
-        gaim.interrupt();
-        aiUI.aiOutput.appendText("Execution halted!\n");
-        aiUI.stopBtn.setDisable(true);
-        aiUI.startBtn.setDisable(false);
+        gaim.halt();
+        aiUI.aiOutput.appendText("Execution halted prematurely!\n");
     }
     private void displayError(String message) {
         Alert popup = new Alert(AlertType.ERROR,message);

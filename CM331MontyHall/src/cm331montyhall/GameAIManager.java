@@ -34,6 +34,7 @@ public class GameAIManager extends Thread{
     
     private GameAIWorker[] workers = null;
     
+    @Override
     public void run() {
         if (this.startBtn != null) {
             this.startBtn.setDisable(true);
@@ -173,6 +174,13 @@ public class GameAIManager extends Thread{
         return output.toString();
     }
 
+    void halt() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (GameAIWorker worker : workers) {
+            worker.halt();
+        }
+    }
+
     
     
     private class GameAIWorker extends java.lang.Thread{
@@ -182,7 +190,11 @@ public class GameAIManager extends Thread{
         private int switchCount = 0;
         private int numberOfDoors = 3;
         private GameInstance currentGame = null;
+        private volatile boolean running;
         
+        public synchronized void halt() {
+            this.running = false;
+        }
         
         
         public GameAIWorker(AtomicInteger winCounter) {
@@ -220,20 +232,35 @@ public class GameAIManager extends Thread{
         
         @Override
         public void run() {
+            running = true;
             int removedDoor;
-            while (0 < this.cycleCount) {
+            while (running && 0 < this.cycleCount) {
                 currentGame = new GameInstance(numberOfDoors);
                 currentGame.setCurrentSelection(ThreadLocalRandom.current().nextInt(0,numberOfDoors));
                 removedDoor =  currentGame.openEmptyDoor();
                 if (0 < switchCount) {
-                    ArrayList<Door> tempDoorList = new ArrayList<>(currentGame.getDoorList());
-                    tempDoorList.remove(currentGame.getDoorList().get(removedDoor));
-                    tempDoorList.remove(currentGame.getDoorList().get(currentGame.getCurrentSelection()));
-                    if (tempDoorList.size() == 1) {
-                        currentGame.setCurrentSelection(tempDoorList.get(0).getId());
+                    int least;
+                    int great;
+                    int newSelection;
+                    if (currentGame.getCurrentSelection() < removedDoor) {
+                        least = currentGame.getCurrentSelection();
+                        great = removedDoor;
                     } else {
-                        currentGame.setCurrentSelection(tempDoorList.get(ThreadLocalRandom.current().nextInt(0,tempDoorList.size())).getId());
+                        least = removedDoor;
+                        great = currentGame.getCurrentSelection();
                     }
+                    if (1 == currentGame.getDoorList().size()) {
+                        newSelection = ThreadLocalRandom.current().nextInt(0,currentGame.getDoorList().size() - 2);
+                    } else {
+                        newSelection = 0;
+                    }
+                    if (least <= newSelection) {
+                        newSelection += 1;
+                    }
+                    if (great <= newSelection) {
+                        newSelection += 1;
+                    }
+                    currentGame.setCurrentSelection(newSelection);
                     this.switchCount--;
                 }
                 if (currentGame.getWinningDoor() == currentGame.getCurrentSelection()) {
@@ -241,6 +268,7 @@ public class GameAIManager extends Thread{
                 }
                 this.cycleCount--;
             }
+            this.running = false;
         }
         
     }

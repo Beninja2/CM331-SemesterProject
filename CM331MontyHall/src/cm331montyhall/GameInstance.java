@@ -47,9 +47,10 @@ public final class GameInstance
                 great = this.currentSelection;
             }
             if (1 == doorList.size() - 2) {
-                out = ThreadLocalRandom.current().nextInt(0,doorList.size() - 2);
-            } else {
                 out = 0;
+            } else {
+                
+                out = ThreadLocalRandom.current().nextInt(0,doorList.size() - 2);
             }
             if (least <= out) {
                 out += 1;
